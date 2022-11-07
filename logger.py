@@ -11,29 +11,29 @@ class Logger:
     def logging_start(self):
         self.__temp_time1 = default_timer()
 
+
     def logging_end(self, user_param):
-        self.__temp_time2 = default_timer()
+        self.__diff_time = round(default_timer() - self.__temp_time1, 4)
         if user_param in self.__logger_dict.keys():
-            self.__logger_dict[user_param] += self.__temp_time2 - self.__temp_time1
+            self.__logger_dict[user_param] += self.__diff_time
         else:
-            self.__logger_dict[user_param] = self.__temp_time2 - self.__temp_time1
+            self.__logger_dict[user_param] = self.__diff_time
         self.__default_timer()
 
     def __default_timer(self):
         self.__temp_time1 = 0
-        self.__temp_time2 = 0
+        self.__diff_time = 0
+
 
     def print_results(self):
-        print('Время работы:')
+        print('-' * 15 + 'Время работы' + '-' * 15)
         [print(f'"{key}" - {value} c') for key, value in self.__logger_dict.items()]
-        print('-------Конец-------')
+        print('-' * 17 + 'Конец' + '-' * 20)
 
-    def __call__(self, func):
+    def logging_func(self, func):
         def inner(*args, **kwargs):
-            print('Start inner')
             self.logging_start()
             res = func(*args, **kwargs)
             self.logging_end(func.__name__)
-            print('End inner')
             return res
         return inner
