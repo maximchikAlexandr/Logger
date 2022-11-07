@@ -4,7 +4,7 @@ from timeit import default_timer
 
 class Logger:
 
-    def __init__(self):
+    def __init__(self, func=None):
         self.__logger_dict = defaultdict()
         self.__default_timer()
 
@@ -27,3 +27,13 @@ class Logger:
         print('Время работы:')
         [print(f'"{key}" - {value} c') for key, value in self.__logger_dict.items()]
         print('-------Конец-------')
+
+    def __call__(self, func):
+        def inner(*args, **kwargs):
+            print('Start inner')
+            self.logging_start()
+            res = func(*args, **kwargs)
+            self.logging_end(func.__name__)
+            print('End inner')
+            return res
+        return inner
