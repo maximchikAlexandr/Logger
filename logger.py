@@ -1,12 +1,13 @@
 from collections import defaultdict
 from timeit import default_timer
-
+from datetime import datetime
 
 class Logger:
 
     def __init__(self, func=None):
         self.__logger_dict = defaultdict()
         self.__default_timer()
+
 
     def logging_start(self):
         self.__temp_time1 = default_timer()
@@ -20,15 +21,6 @@ class Logger:
             self.__logger_dict[user_param] = self.__diff_time
         self.__default_timer()
 
-    def __default_timer(self):
-        self.__temp_time1 = 0
-        self.__diff_time = 0
-
-
-    def print_results(self):
-        print('-' * 15 + 'Время работы' + '-' * 15)
-        [print(f'"{key}" - {value} c') for key, value in self.__logger_dict.items()]
-        print('-' * 17 + 'Конец' + '-' * 20)
 
     def logging_func(self, func):
         def inner(*args, **kwargs):
@@ -37,3 +29,21 @@ class Logger:
             self.logging_end(func.__name__)
             return res
         return inner
+
+
+    def print_results(self):
+        print(self.__get_results())
+
+
+    def __default_timer(self):
+        self.__temp_time1 = 0
+        self.__diff_time = 0
+
+
+    def __get_results(self):
+        return datetime.now().strftime("%d-%m-%Y, %H:%M") + '\n' +\
+        '-' * 15 + 'Время работы' + '-' * 15 + '\n' + \
+        '\n'.join([f"{key} - {value} c" for key, value in self.__logger_dict.items()])  + '\n' + \
+        '-' * 17 + 'Конец' + '-' * 20
+
+
