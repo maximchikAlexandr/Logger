@@ -2,9 +2,13 @@ from collections import defaultdict
 from timeit import default_timer
 from datetime import datetime
 
+
+NUM_DIGITS = 4
+
+
 class Logger:
 
-    def __init__(self, func=None):
+    def __init__(self):
         self.__logger_dict = defaultdict()
         self.__default_timer()
 
@@ -14,7 +18,7 @@ class Logger:
 
 
     def logging_end(self, user_param):
-        self.__diff_time = round(default_timer() - self.__temp_time1, 4)
+        self.__diff_time = round(default_timer() - self.__temp_time1, NUM_DIGITS)
         if user_param in self.__logger_dict.keys():
             self.__logger_dict[user_param] += self.__diff_time
         else:
